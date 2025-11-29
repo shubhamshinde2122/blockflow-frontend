@@ -20,7 +20,7 @@ function Login({ onLogin, onSwitchToRegister }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:8080/api/auth/login', formData);
+            const response = await axios.post('https://meticulous-smile-production-9fd4.up.railway.app/api/auth/login', formData);
             const { token, username } = response.data;
             localStorage.setItem('authToken', token);
             localStorage.setItem('username', username);

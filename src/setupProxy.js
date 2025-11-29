@@ -4,7 +4,7 @@ module.exports = function (app) {
     app.use(
         '/api',
         createProxyMiddleware({
-            target: 'http://localhost:8080',
+            target: 'https://meticulous-smile-production-9fd4.up.railway.app',
             changeOrigin: true,
         })
     );

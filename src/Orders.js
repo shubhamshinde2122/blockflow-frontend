@@ -27,7 +27,7 @@ function Orders({ authToken, onLogout }) {
     const fetchOrders = async () => {
         try {
             setLoading(true);
-            const response = await axios.get('http://localhost:8080/api/orders', getAuthHeaders());
+            const response = await axios.get('https://meticulous-smile-production-9fd4.up.railway.app/api/orders', getAuthHeaders());
             setOrders(response.data);
             setError(null);
         } catch (err) {
@@ -51,7 +51,7 @@ function Orders({ authToken, onLogout }) {
     const handleCreateOrder = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:8080/api/orders', {
+            await axios.post('https://meticulous-smile-production-9fd4.up.railway.app/api/orders', {
                 productId: parseInt(formData.productId),
                 customerName: formData.customerName,
                 quantity: parseInt(formData.quantity)
@@ -75,7 +75,7 @@ function Orders({ authToken, onLogout }) {
         // if (window.confirm('Are you sure you want to delete this order?')) {
         try {
             console.log("Sending DELETE request...");
-            await axios.delete(`http://localhost:8080/api/orders/${id}`, getAuthHeaders());
+            await axios.delete(`https://meticulous-smile-production-9fd4.up.railway.app/api/orders/${id}`, getAuthHeaders());
             console.log("Delete successful, fetching orders...");
             fetchOrders();
             alert('Order deleted successfully!');

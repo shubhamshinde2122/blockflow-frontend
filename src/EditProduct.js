@@ -38,7 +38,7 @@ function EditProduct({ product, authToken, onClose, onUpdate }) {
         e.preventDefault();
         try {
             const response = await axios.put(
-                `http://localhost:8080/api/products/${product.id}`,
+                `https://meticulous-smile-production-9fd4.up.railway.app/api/products/${product.id}`,
                 {
                     name: formData.name,
                     dimensions: formData.dimensions,

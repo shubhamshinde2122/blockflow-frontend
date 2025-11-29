@@ -32,7 +32,7 @@ function Products({ authToken, onLogout }) {
     const fetchProducts = async () => {
         try {
             setLoading(true);
-            const response = await axios.get('http://localhost:8080/api/products', getAuthHeaders());
+            const response = await axios.get('https://meticulous-smile-production-9fd4.up.railway.app/api/products', getAuthHeaders());
             setProducts(response.data);
             setError(null);
         } catch (err) {
@@ -54,7 +54,7 @@ function Products({ authToken, onLogout }) {
         } else {
             try {
                 const response = await axios.get(
-                    `http://localhost:8080/api/products/search?name=${searchTerm}`,
+                    `https://meticulous-smile-production-9fd4.up.railway.app/api/products/search?name=${searchTerm}`,
                     getAuthHeaders()
                 );
                 setProducts(response.data);
@@ -75,7 +75,7 @@ function Products({ authToken, onLogout }) {
     const handleCreateProduct = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:8080/api/products', {
+            await axios.post('https://meticulous-smile-production-9fd4.up.railway.app/api/products', {
                 name: formData.name,
                 dimensions: formData.dimensions,
                 pricePerUnit: parseFloat(formData.pricePerUnit),
@@ -103,7 +103,7 @@ function Products({ authToken, onLogout }) {
     const handleDeleteProduct = async (id) => {
         // if (window.confirm('Are you sure you want to delete this product?')) {
         try {
-            await axios.delete(`http://localhost:8080/api/products/${id}`, getAuthHeaders());
+            await axios.delete(`https://meticulous-smile-production-9fd4.up.railway.app/api/products/${id}`, getAuthHeaders());
             fetchProducts();
             alert('Product deleted successfully!');
         } catch (err) {

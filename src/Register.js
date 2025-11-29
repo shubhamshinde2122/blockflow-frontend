@@ -28,7 +28,7 @@ function Register({ onSwitchToLogin }) {
         }
 
         try {
-            await axios.post('http://localhost:8080/api/auth/register', {
+            await axios.post('https://meticulous-smile-production-9fd4.up.railway.app/api/auth/register', {
                 username: formData.username,
                 email: formData.email,
                 password: formData.password

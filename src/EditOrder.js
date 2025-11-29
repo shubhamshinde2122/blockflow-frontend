@@ -34,7 +34,7 @@ function EditOrder({ order, authToken, onClose, onUpdate }) {
         e.preventDefault();
         try {
             const response = await axios.put(
-                `http://localhost:8080/api/orders/${order.id}`,
+                `https://meticulous-smile-production-9fd4.up.railway.app/api/orders/${order.id}`,
                 {
                     productId: parseInt(formData.productId),
                     customerName: formData.customerName,
