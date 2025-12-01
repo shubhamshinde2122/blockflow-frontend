@@ -1,0 +1,331 @@
+.search-container {
+    background: linear-gradient(135deg, #6c5ce7 0%, #00d2fc 100%);
+    padding: 60px 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Animated wave effect */
+.search-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 200%;
+    height: 140%;
+    background: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120'><path d='M0,60 Q300,0 600,60 T1200,60 L1200,120 L0,120 Z' fill='%23ffffff' fill-opacity='0.12'/></svg>");
+    background-size: 600px 120px;
+    animation: wave 18s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes wave {
+    0% {
+        left: -100%;
+    }
+
+    100% {
+        left: 0;
+    }
+}
+
+.search-wrapper {
+    max-width: 1000px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+.search-bar {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(108, 92, 231, 0.3);
+    padding: 20px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+/* Search input group */
+.search-input-group {
+    display: flex;
+    align-items: center;
+    position: relative;
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 0 16px;
+    border: 2px solid #e8e8e8;
+    transition: all 0.3s ease;
+}
+
+.search-input-group:focus-within {
+    border-color: #ffd700;
+    box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.18);
+}
+
+.search-icon {
+    font-size: 1.2rem;
+    margin-right: 10px;
+    opacity: 0.8;
+}
+
+.search-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 14px 0;
+    font-size: 1rem;
+    color: #2d3436;
+    outline: none;
+}
+
+.search-input::placeholder {
+    color: #b0b0b0;
+}
+
+.clear-btn {
+    background: none;
+    border: none;
+    font-size: 1.1rem;
+    cursor: pointer;
+    color: #b0b0b0;
+    transition: color 0.2s ease, transform 0.2s ease;
+    padding: 0 8px;
+}
+
+.clear-btn:hover {
+    color: #ff6b6b;
+    transform: scale(1.1);
+}
+
+/* Suggestions dropdown */
+.suggestions-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 20px;
+    right: 20px;
+    background: white;
+    border: 2px solid #e8e8e8;
+    border-top: none;
+    border-radius: 0 0 15px 15px;
+    max-height: 220px;
+    overflow-y: auto;
+    z-index: 10;
+    margin-top: -8px;
+}
+
+.suggestion-item {
+    padding: 10px 16px;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+    color: #2d3436;
+    font-size: 0.95rem;
+}
+
+.suggestion-item:hover {
+    background: #f8f9fa;
+    color: #6c5ce7;
+}
+
+/* Filters row */
+.filters-row {
+    display: grid;
+    grid-template-columns: 1.4fr 1.3fr 1.3fr auto;
+    gap: 12px;
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+.filter-select {
+    background: white;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 0.95rem;
+    color: #2d3436;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    appearance: none;
+    padding-right: 32px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236C5CE7' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+}
+
+.filter-select:hover {
+    background-color: #f8f9fa;
+    border-color: #6c5ce7;
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: #ffd700;
+    box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.18);
+}
+
+/* Price range */
+.price-range {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: white;
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.price-range:focus-within {
+    border-color: #ffd700;
+    box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.18);
+}
+
+.price-input {
+    width: 80px;
+    border: none;
+    background: transparent;
+    text-align: center;
+    font-size: 0.95rem;
+    color: #2d3436;
+    outline: none;
+}
+
+.price-input::placeholder {
+    color: #b0b0b0;
+}
+
+.price-range span {
+    color: #b0b0b0;
+}
+
+/* Main Search Button */
+.search-btn {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ffb347 100%);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 18px rgba(255, 107, 107, 0.4);
+    font-size: 0.95rem;
+    white-space: nowrap;
+}
+
+.search-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 26px rgba(255, 107, 107, 0.55);
+}
+
+.search-btn:active {
+    transform: translateY(0);
+}
+
+/* Quick filters */
+.quick-filters {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+}
+
+.quick-filter-btn {
+    background: rgba(255, 255, 255, 0.15);
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(6px);
+}
+
+.quick-filter-btn:hover {
+    background: rgba(255, 255, 255, 0.28);
+    border-color: rgba(255, 255, 255, 0.7);
+    transform: translateY(-2px);
+}
+
+.quick-filter-btn:active {
+    transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .filters-row {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .search-btn {
+        grid-column: 1 / -1;
+        justify-self: stretch;
+    }
+}
+
+@media (max-width: 768px) {
+    .search-container {
+        padding: 40px 16px;
+    }
+
+    .search-bar {
+        padding: 16px;
+    }
+
+    .filters-row {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .search-btn {
+        width: 100%;
+    }
+
+    .quick-filters {
+        gap: 8px;
+    }
+
+    .quick-filter-btn {
+        padding: 6px 12px;
+        font-size: 0.85rem;
+    }
+
+    .price-input {
+        width: 70px;
+    }
+}
+
+@media (max-width: 480px) {
+    .search-container {
+        padding: 30px 12px;
+    }
+
+    .search-bar {
+        padding: 12px;
+    }
+
+    .search-input {
+        font-size: 0.95rem;
+    }
+
+    .filter-select {
+        padding: 10px 12px;
+        font-size: 0.85rem;
+    }
+
+    .price-input {
+        width: 60px;
+        font-size: 0.85rem;
+    }
+
+    .search-btn {
+        padding: 10px 16px;
+        font-size: 0.9rem;
+    }
+
+    .quick-filter-btn {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+    }
+}

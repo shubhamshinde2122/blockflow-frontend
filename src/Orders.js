@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from './config';
 import EditOrder from './EditOrder';
 import './App.css';
 
@@ -27,7 +28,7 @@ function Orders({ authToken, onLogout }) {
     const fetchOrders = async () => {
         try {
             setLoading(true);
-            const response = await axios.get('https://meticulous-smile-production-9fd4.up.railway.app/api/orders', getAuthHeaders());
+            const response = await axios.get(`${API_BASE_URL}/api/orders`, getAuthHeaders());
             setOrders(response.data);
             setError(null);
         } catch (err) {
@@ -51,7 +52,7 @@ function Orders({ authToken, onLogout }) {
     const handleCreateOrder = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('https://meticulous-smile-production-9fd4.up.railway.app/api/orders', {
+            await axios.post(`${API_BASE_URL}/api/orders`, {
                 productId: parseInt(formData.productId),
                 customerName: formData.customerName,
                 quantity: parseInt(formData.quantity)
@@ -66,7 +67,18 @@ function Orders({ authToken, onLogout }) {
             fetchOrders();
             alert('Order created successfully!');
         } catch (err) {
-            alert('Error creating order: ' + (err.response?.data || err.message));
+            console.error("Create order error:", err);
+            const errorData = err.response?.data;
+            let errorMessage = err.message;
+
+            if (errorData) {
+                if (typeof errorData === 'string') {
+                    errorMessage = errorData;
+                } else if (typeof errorData === 'object') {
+                    errorMessage = errorData.message || errorData.error || JSON.stringify(errorData);
+                }
+            }
+            alert('Error creating order: ' + errorMessage);
         }
     };
 
@@ -75,13 +87,23 @@ function Orders({ authToken, onLogout }) {
         // if (window.confirm('Are you sure you want to delete this order?')) {
         try {
             console.log("Sending DELETE request...");
-            await axios.delete(`https://meticulous-smile-production-9fd4.up.railway.app/api/orders/${id}`, getAuthHeaders());
+            await axios.delete(`${API_BASE_URL}/api/orders/${id}`, getAuthHeaders());
             console.log("Delete successful, fetching orders...");
             fetchOrders();
             alert('Order deleted successfully!');
         } catch (err) {
             console.error("Delete failed:", err);
-            alert('Error deleting order: ' + (err.response?.data || err.message));
+            const errorData = err.response?.data;
+            let errorMessage = err.message;
+
+            if (errorData) {
+                if (typeof errorData === 'string') {
+                    errorMessage = errorData;
+                } else if (typeof errorData === 'object') {
+                    errorMessage = errorData.message || errorData.error || JSON.stringify(errorData);
+                }
+            }
+            alert('Error deleting order: ' + errorMessage);
         }
         // }
     };

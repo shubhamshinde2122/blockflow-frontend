@@ -369,6 +369,16 @@ body {
 .header-content {
   align-items: center;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.nav-buttons {
+  margin-top: 25px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
 }
 
 /* Modal Styles */

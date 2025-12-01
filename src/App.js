@@ -1,75 +1,77 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link, Navigate, useNavigate } from 'react-router-dom';
 import './App.css';
 import Orders from './Orders';
-import Products from './Products';
+import ProductsPage from './pages/ProductsPage';
+import LandingPage from './pages/LandingPage';
 import Login from './Login';
 import Register from './Register';
 
 function App() {
   const [authToken, setAuthToken] = useState(localStorage.getItem("authToken"));
-  const [currentPage, setCurrentPage] = useState("login"); // "login", "register", "dashboard"
-  const [view, setView] = useState('products'); // 'products' or 'orders'
-
-  useEffect(() => {
-    if (authToken) {
-      setCurrentPage("dashboard");
-    } else {
-      setCurrentPage("login");
-    }
-  }, [authToken]);
 
   const handleLogin = (token) => {
     setAuthToken(token);
+    localStorage.setItem("authToken", token);
   };
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");
     localStorage.removeItem("username");
     setAuthToken(null);
-    setCurrentPage("login");
-    setView('products');
   };
 
-  if (!authToken) {
-    if (currentPage === "register") {
-      return <Register onSwitchToLogin={() => setCurrentPage("login")} />;
-    }
-    return <Login onLogin={handleLogin} onSwitchToRegister={() => setCurrentPage("register")} />;
-  }
-
   return (
-    <div className="app">
-      <header className="header">
-        <div className="header-content">
-          <h1>🏢 BlockFlow API</h1>
-          <button onClick={handleLogout} className="btn btn-danger btn-sm">Logout</button>
-        </div>
-        <div className="nav-buttons" style={{ marginTop: '10px' }}>
-          <button
-            className={`btn ${view === 'products' ? 'btn-primary' : 'btn-secondary'}`}
-            onClick={() => setView('products')}
-            style={{ marginRight: '10px' }}
-          >
-            📦 Products
-          </button>
-          <button
-            className={`btn ${view === 'orders' ? 'btn-primary' : 'btn-secondary'}`}
-            onClick={() => setView('orders')}
-          >
-            📝 Orders
-          </button>
-        </div>
-      </header>
+    <Router>
+      <div className="app">
+        <header className="header">
+          <div className="header-content">
+            <h1><Link to="/" style={{ color: 'white', textDecoration: 'none' }}>🏢 BlockFlow API</Link></h1>
+            {authToken ? (
+              <button onClick={handleLogout} className="btn btn-danger btn-sm">Logout</button>
+            ) : (
+              <Link to="/login" className="btn btn-primary btn-sm">Login</Link>
+            )}
+          </div>
+          <div className="nav-buttons">
+            <Link to="/products" className="btn btn-secondary">
+              📦 Products
+            </Link>
+            {authToken && (
+              <Link to="/orders" className="btn btn-secondary">
+                📝 Orders
+              </Link>
+            )}
+          </div>
+        </header>
 
-      <main className="main">
-        {view === 'orders' ? (
-          <Orders authToken={authToken} onLogout={handleLogout} />
-        ) : (
-          <Products authToken={authToken} onLogout={handleLogout} />
-        )}
-      </main>
-    </div>
+        <main className="main">
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/products" element={<ProductsPage />} />
+            <Route path="/login" element={authToken ? <Navigate to="/" /> : <LoginWrapper onLogin={handleLogin} />} />
+            <Route path="/register" element={authToken ? <Navigate to="/" /> : <RegisterWrapper />} />
+            <Route path="/orders" element={authToken ? <Orders authToken={authToken} onLogout={handleLogout} /> : <Navigate to="/login" />} />
+          </Routes>
+        </main>
+      </div>
+    </Router>
   );
 }
+
+// Wrapper components to handle navigation after login/register
+const LoginWrapper = ({ onLogin }) => {
+  const navigate = useNavigate();
+  const handleLoginSuccess = (token) => {
+    onLogin(token);
+    navigate('/');
+  };
+  return <Login onLogin={handleLoginSuccess} onSwitchToRegister={() => navigate('/register')} />;
+};
+
+const RegisterWrapper = () => {
+  const navigate = useNavigate();
+  return <Register onSwitchToLogin={() => navigate('/login')} />;
+};
 
 export default App;

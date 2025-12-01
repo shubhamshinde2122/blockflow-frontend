@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from './config';
 import './App.css';
 
 function Login({ onLogin, onSwitchToRegister }) {
@@ -20,13 +21,35 @@ function Login({ onLogin, onSwitchToRegister }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('https://meticulous-smile-production-9fd4.up.railway.app/api/auth/login', formData);
+            const response = await axios.post(`${API_BASE_URL}/api/auth/login`, formData);
             const { token, username } = response.data;
             localStorage.setItem('authToken', token);
             localStorage.setItem('username', username);
             onLogin(token);
         } catch (err) {
-            setError(err.response?.data || 'Invalid credentials');
+            console.error("Login error:", err);
+
+            if (!err.response) {
+                setError('Network error: Unable to connect to server. Is the backend running?');
+                return;
+            }
+
+            const errorData = err.response?.data;
+            let errorMessage = 'Invalid credentials';
+
+            if (errorData) {
+                if (typeof errorData === 'string') {
+                    errorMessage = errorData;
+                } else if (typeof errorData === 'object') {
+                    // Handle Spring Boot error object or other object responses
+                    errorMessage = errorData.message || errorData.error || JSON.stringify(errorData);
+                    // Ensure it's a string even if message/error was an object
+                    if (typeof errorMessage === 'object') {
+                        errorMessage = JSON.stringify(errorMessage);
+                    }
+                }
+            }
+            setError(errorMessage);
         }
     };
 

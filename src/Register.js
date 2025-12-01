@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from './config';
 import './App.css';
 
 function Register({ onSwitchToLogin }) {
@@ -28,7 +29,7 @@ function Register({ onSwitchToLogin }) {
         }
 
         try {
-            await axios.post('https://meticulous-smile-production-9fd4.up.railway.app/api/auth/register', {
+            await axios.post(`${API_BASE_URL}/api/auth/register`, {
                 username: formData.username,
                 email: formData.email,
                 password: formData.password
@@ -37,7 +38,28 @@ function Register({ onSwitchToLogin }) {
             setError(null);
             setTimeout(() => onSwitchToLogin(), 2000);
         } catch (err) {
-            setError(err.response?.data || 'Registration failed');
+            console.error("Registration error:", err);
+
+            if (!err.response) {
+                setError('Network error: Unable to connect to server. Is the backend running?');
+                setSuccess(null);
+                return;
+            }
+
+            const errorData = err.response?.data;
+            let errorMessage = 'Registration failed';
+
+            if (errorData) {
+                if (typeof errorData === 'string') {
+                    errorMessage = errorData;
+                } else if (typeof errorData === 'object') {
+                    errorMessage = errorData.message || errorData.error || JSON.stringify(errorData);
+                    if (typeof errorMessage === 'object') {
+                        errorMessage = JSON.stringify(errorMessage);
+                    }
+                }
+            }
+            setError(errorMessage);
             setSuccess(null);
         }
     };

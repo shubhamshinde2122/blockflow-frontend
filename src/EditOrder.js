@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from './config';
 import './App.css';
 
 function EditOrder({ order, authToken, onClose, onUpdate }) {
@@ -34,7 +35,7 @@ function EditOrder({ order, authToken, onClose, onUpdate }) {
         e.preventDefault();
         try {
             const response = await axios.put(
-                `https://meticulous-smile-production-9fd4.up.railway.app/api/orders/${order.id}`,
+                `${API_BASE_URL}/api/orders/${order.id}`,
                 {
                     productId: parseInt(formData.productId),
                     customerName: formData.customerName,
