@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { API_BASE_URL } from '../config';
 import axios from 'axios';
 import SearchBar from '../components/SearchBar';
 import Pagination from '../components/Pagination';
 import './ProductsPage.css';
+import { API_BASE_URL } from '../config';
+import { useCart } from '../context/CartContext';
 
 const ProductsPage = () => {
+    const { addToCart } = useCart();
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
@@ -80,10 +82,11 @@ const ProductsPage = () => {
     };
 
     const handleSearch = (newParams) => {
-        setSearchParams({
+        setSearchParams((prev) => ({
+            ...prev,
             ...newParams,
             page: 0, // Reset to first page on new search
-        });
+        }));
     };
 
     const handlePageChange = (pageIndex) => {
@@ -170,7 +173,7 @@ const ProductsPage = () => {
 
                                     {/* Price */}
                                     <div className="product-price">
-                                        ${product.price ? product.price.toFixed(2) : '0.00'}
+                                        ${product.pricePerUnit ? product.pricePerUnit.toFixed(2) : '0.00'}
                                     </div>
 
                                     {/* Stock Status */}
@@ -184,8 +187,15 @@ const ProductsPage = () => {
 
                                     {/* Action Buttons */}
                                     <div className="product-actions">
-                                        <button className="btn-add-cart" disabled={product.stock === 0}>
-                                            Add to Cart
+                                        <button
+                                            className="btn-add-cart"
+                                            disabled={product.stock === 0}
+                                            onClick={() => {
+                                                addToCart({ ...product, price: product.pricePerUnit }, 1);
+                                                alert(`${product.name} added to cart!`);
+                                            }}
+                                        >
+                                            {product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
                                         </button>
                                     </div>
                                 </div>

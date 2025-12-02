@@ -6,9 +6,12 @@ import ProductsPage from './pages/ProductsPage';
 import LandingPage from './pages/LandingPage';
 import Login from './Login';
 import Register from './Register';
+import CartPage from './pages/CartPage';
+import { useCart } from './context/CartContext';
 
 function App() {
   const [authToken, setAuthToken] = useState(localStorage.getItem("authToken"));
+  const { getTotalItems } = useCart();
 
   const handleLogin = (token) => {
     setAuthToken(token);
@@ -42,12 +45,16 @@ function App() {
                 📝 Orders
               </Link>
             )}
+            <Link to="/cart" className="btn btn-secondary">
+              🛒 Cart ({getTotalItems()})
+            </Link>
           </div>
         </header>
 
         <main className="main">
           <Routes>
             <Route path="/" element={<LandingPage />} />
+            <Route path="/cart" element={<CartPage />} />
             <Route path="/products" element={<ProductsPage />} />
             <Route path="/login" element={authToken ? <Navigate to="/" /> : <LoginWrapper onLogin={handleLogin} />} />
             <Route path="/register" element={authToken ? <Navigate to="/" /> : <RegisterWrapper />} />

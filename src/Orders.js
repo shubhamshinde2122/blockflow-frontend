@@ -83,12 +83,12 @@ function Orders({ authToken, onLogout }) {
     };
 
     const handleDeleteOrder = async (id) => {
-        console.log("Attempting to delete order with ID:", id);
+
         // if (window.confirm('Are you sure you want to delete this order?')) {
         try {
-            console.log("Sending DELETE request...");
+
             await axios.delete(`${API_BASE_URL}/api/orders/${id}`, getAuthHeaders());
-            console.log("Delete successful, fetching orders...");
+
             fetchOrders();
             alert('Order deleted successfully!');
         } catch (err) {
